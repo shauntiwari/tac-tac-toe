@@ -8,7 +8,7 @@ const gameBoard = (function() {
     ];
 
     function currentState() {
-        // This creates a deep copy instead of passing the reference to board
+        // returns a deep copy instead of the reference to board
         return JSON.parse(JSON.stringify(board));
     }
 
@@ -44,22 +44,43 @@ const gameBoard = (function() {
 })();
 
 // Testing Gameboard functionality
-console.log("Initial board state:");
-console.log(gameBoard.currentState());
-console.log("\nPlacing X at position (0,0):");
-gameBoard.placeMarker(0,0,"X");
-console.log("Board state after placing X:");
-console.log(gameBoard.currentState());
-console.log("\nResetting board:");
-gameBoard.resetBoard();
-console.log("Board state after reset:");
-console.log(gameBoard.currentState());
+// console.log("Initial board state:");
+// console.log(gameBoard.currentState());
+// console.log("\nPlacing X at position (0,0):");
+// gameBoard.placeMarker(0,0,"X");
+// console.log("Board state after placing X:");
+// console.log(gameBoard.currentState());
+// console.log("\nResetting board:");
+// gameBoard.resetBoard();
+// console.log("Board state after reset:");
+// console.log(gameBoard.currentState());
 
 // Setup Player object - Player 1 has X and Player 2 has O
 
-// const players = (function() {
+const player = function(name, marker) {
+    
+    function getName() {
+        return name;
+    }
 
-// })();
+    function getMarker() {
+        return marker;
+    }
+
+    function makeMove(row, column) {
+        gameBoard.placeMarker(row, column, marker);
+    }
+    
+    return {getName, getMarker, makeMove};
+
+};
+
+// Test Player factory function
+const playerOne = player("Bro", "X");
+console.log(playerOne.getName());
+console.log(playerOne.getMarker());
+playerOne.makeMove(2,1);
+console.log(gameBoard.currentState());
 
 
 // Setup Game Flow object as IIFE since there's only one
