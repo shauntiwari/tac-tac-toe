@@ -1,0 +1,104 @@
+/* Modern CSS Reset */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default margin and padding */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Make images easier to work with */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Reset anchor styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Improve text rendering */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Remove default fieldset styles */
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default table spacing */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Begin my CSS here */
+
+#container {
+    height: 900px;
+    width: 1200px;
+    border: solid 1px;
+    margin: 50px;
+}
