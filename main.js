@@ -86,7 +86,7 @@ const gameFlow = (function() {
         while (!validMove) {
             let row = prompt("Enter the row (0 - 2)");
             let column = prompt("Enter the column (0 - 2)");
-            validMove = activePlayer.makeMove(row, column, activePlayer.getMarker());
+            validMove = activePlayer.makeMove(row, column);
 
             if(!validMove) {
                 console.log("That position is already taken! Try again!");
