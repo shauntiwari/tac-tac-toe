@@ -1,4 +1,4 @@
-// Setup Gameboard object with game array as IIFE since there's only one
+// Setup gameBoard object with game array as an IIFE, since there's only one
 const gameBoard = (function() {
     
     const board = [
@@ -8,23 +8,27 @@ const gameBoard = (function() {
     ];
 
     function currentState() {
-        return board;
+        // This creates a deep copy instead of passing the reference to board
+        return JSON.parse(JSON.stringify(board));
     }
 
     function placeMarker(row, column, marker) {
+        console.log(`Attempting to place ${marker} at row ${row}, column ${column}`);
+        console.log(`Is position empty? ${ifEmpty(row, column)}`);
         if (ifEmpty(row, column)) {
-            board[row - 1][column - 1] = marker;
+            board[row][column] = marker;
+            console.log(`After placement: ${board[row][column]}`);
         }
     }
 
     function ifEmpty(row, column) {
-        return board[row - 1][column - 1] === "" ? true : false;
+        return board[row][column] === "" ? true : false;
     }
 
     function resetBoard() {
-        for(let row = 1; row < 4; row++) {
-            for(let column = 1; column < 4; column++) {
-                board[row - 1][column - 1] = "";
+        for(let row = 0; row < 3; row++) {
+            for(let column = 0; column < 3; column++) {
+                board[row][column] = "";
             }
         }
     }
@@ -40,8 +44,15 @@ const gameBoard = (function() {
 })();
 
 // Testing Gameboard functionality
+console.log("Initial board state:");
 console.log(gameBoard.currentState());
-gameBoard.placeMarker(3,2,"X");
+console.log("\nPlacing X at position (0,0):");
+gameBoard.placeMarker(0,0,"X");
+console.log("Board state after placing X:");
+console.log(gameBoard.currentState());
+console.log("\nResetting board:");
+gameBoard.resetBoard();
+console.log("Board state after reset:");
 console.log(gameBoard.currentState());
 
 // Setup Player object - Player 1 has X and Player 2 has O
