@@ -94,6 +94,7 @@ const gameFlow = (function() {
         }
         
         gameBoard.printBoard();
+        gameDisplay.displayBoard();
     }
 
     function checkWin() {
@@ -165,7 +166,62 @@ const gameFlow = (function() {
         [[0,2], [1,1], [2,0]]  // Top-right to bottom-left
     ];
 
-    return {playGame}; // Return an object containing the function
+    return {playGame}; // Return an object containing publicly available function
+})();
+
+
+// Setup Game Display object as IIFE since there's only one
+const gameDisplay = (function() {
+
+    // function to display the board on the webpage
+    function displayBoard() {
+        
+        //remove existing grid if there is one
+        const container = document.getElementById("container");
+        const existingGrid = document.getElementById("grid");
+        if (existingGrid) {
+            container.removeChild(existingGrid);
+        }
+        
+        //create new grid
+        const grid = document.createElement("div");
+        grid.id = 'grid';
+
+        //set grid display elements to their corresponding board items
+        const grid00 = document.createElement("div")
+        grid00.innerHTML = gameBoard.currentState()[0][0];
+        const grid01 = document.createElement("div")
+        grid01.innerHTML = gameBoard.currentState()[0][1];
+        const grid02 = document.createElement("div")
+        grid02.innerHTML = gameBoard.currentState()[0][2];
+        const grid10 = document.createElement("div")
+        grid10.innerHTML = gameBoard.currentState()[1][0];
+        const grid11 = document.createElement("div")
+        grid11.innerHTML = gameBoard.currentState()[1][1];
+        const grid12 = document.createElement("div")
+        grid12.innerHTML = gameBoard.currentState()[1][2];
+        const grid20 = document.createElement("div")
+        grid20.innerHTML = gameBoard.currentState()[2][0];
+        const grid21 = document.createElement("div")
+        grid21.innerHTML = gameBoard.currentState()[2][1];
+        const grid22 = document.createElement("div")
+        grid22.innerHTML = gameBoard.currentState()[2][2];
+        
+        grid.appendChild(grid00);
+        grid.appendChild(grid01);
+        grid.appendChild(grid02);
+        grid.appendChild(grid10);
+        grid.appendChild(grid11);
+        grid.appendChild(grid12);
+        grid.appendChild(grid20);
+        grid.appendChild(grid21);
+        grid.appendChild(grid22);
+        
+        container.appendChild(grid);
+    }
+
+    return {displayBoard};
+
 })();
 
 gameFlow.playGame();

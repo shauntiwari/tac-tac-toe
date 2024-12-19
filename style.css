@@ -107,3 +107,22 @@ table {
 #container h1 {
  text-align: center;
 }
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(3, 250px);
+  grid-template-rows: repeat(3, 250px);
+  font-size: 6rem;
+  justify-content: center;
+  margin: 50px auto;
+  width: fit-content;
+}
+
+#grid div {
+  border: 2px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+}
