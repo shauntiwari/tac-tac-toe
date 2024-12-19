@@ -82,7 +82,7 @@ const gameFlow = (function() {
                 gameOver = true;
             } else {
                 switchPlayer();
-                gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);
+                gameDisplay.updateStatus(`${activePlayer.getName()}'s turn, click to place an ${activePlayer.getMarker()}`);
             }
         }
     }
@@ -125,7 +125,7 @@ const gameFlow = (function() {
     function playGame() {
         gameOver = false;
         gameDisplay.displayBoard();
-        gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);     
+        gameDisplay.updateStatus(`${activePlayer.getName()}'s turn, click to place an ${activePlayer.getMarker()}`);
     }
 
     const winConditions = [
