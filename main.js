@@ -33,23 +33,12 @@ const gameBoard = (function() {
         }
     }
 
-    function printBoard() {
-        const currentBoard = board;
-        console.log('\nCurrent board:');
-        for(let row = 0; row < 3; row++) {
-            console.log(currentBoard[row].join(' | '));
-            if(row < 2) console.log('---------');
-        }
-        console.log('\n');
-    }
-
     //make methods available publicly
     return {
         currentState,
         placeMarker,
         ifEmpty,
         resetBoard,
-        printBoard
     };
 
 })();
@@ -70,10 +59,9 @@ const player = function(name, marker) {
     }
     
     return {getName, getMarker, makeMove};
-
 };
 
-// Setup Game Flow object as IIFE since there's only one
+// Setup Game Flow object as IIFE since there's only one, manages game state & logic
 const gameFlow = (function() {
     const playerOne = player("Player One", "X");
     const playerTwo = player("Player Two", "O");
@@ -137,21 +125,7 @@ const gameFlow = (function() {
     function playGame() {
         gameOver = false;
         gameDisplay.displayBoard();
-        gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);
-        
-        while (!gameOver) {
-            takeTurn();
-
-            if (checkTie()) {
-                console.log("Tie game!");
-                gameOver = true;
-            } else if (checkWin()) {
-                 console.log(activePlayer.getName() + " wins!");
-                 gameOver = true;
-            } else {
-                switchPlayer();
-            }
-        }     
+        gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);     
     }
 
     const winConditions = [
@@ -174,12 +148,11 @@ const gameFlow = (function() {
 })();
 
 
-// Setup Game Display object as IIFE since there's only one
+// Setup Game Display object as IIFE since there's only one, handles UI updates and user interaction
 const gameDisplay = (function() {
 
     function displayBoard() {
         const container = document.getElementById("container");
-        const status = document.getElementById("status");
 
         //clear any existing grid
         const existingGrid = document.getElementById("grid");
