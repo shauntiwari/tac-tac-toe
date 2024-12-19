@@ -126,3 +126,9 @@ table {
   font-weight: bold;
   cursor: pointer;
 }
+
+#status {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 20px 0px;
+}

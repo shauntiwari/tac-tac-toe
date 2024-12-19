@@ -78,23 +78,25 @@ const gameFlow = (function() {
     const playerOne = player("Player One", "X");
     const playerTwo = player("Player Two", "O");
     let activePlayer = playerOne;
+    let gameOver = false;
 
-    function takeTurn() {
-        console.log(activePlayer.getName() + " it is your turn!");
-        let validMove = false;
+    function handlePlayerMove(row, col) {
+        if (gameOver) return;
 
-        while (!validMove) {
-            let row = prompt("Enter the row (0 - 2)");
-            let column = prompt("Enter the column (0 - 2)");
-            validMove = activePlayer.makeMove(row, column);
-
-            if(!validMove) {
-                console.log("That position is already taken! Try again!");
+        if (activePlayer.makeMove(row, col)) {
+            gameDisplay.displayBoard();
+            
+            if (checkWin()) {
+                gameDisplay.updateStatus(`${activePlayer.getName()} wins!`);
+                gameOver = true;
+            } else if (checkTie()) {
+                gameDisplay.updateStatus("Tie game!");
+                gameOver = true;
+            } else {
+                switchPlayer();
+                gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);
             }
         }
-        
-        gameBoard.printBoard();
-        gameDisplay.displayBoard();
     }
 
     function checkWin() {
@@ -133,7 +135,9 @@ const gameFlow = (function() {
     }
 
     function playGame() {
-        let gameOver = false;
+        gameOver = false;
+        gameDisplay.displayBoard();
+        gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);
         
         while (!gameOver) {
             takeTurn();
@@ -166,18 +170,18 @@ const gameFlow = (function() {
         [[0,2], [1,1], [2,0]]  // Top-right to bottom-left
     ];
 
-    return {playGame}; // Return an object containing publicly available function
+    return {playGame, handlePlayerMove}; // Return an object containing publicly available function
 })();
 
 
 // Setup Game Display object as IIFE since there's only one
 const gameDisplay = (function() {
 
-    // function to display the board on the webpage
     function displayBoard() {
-        
-        //remove existing grid if there is one
         const container = document.getElementById("container");
+        const status = document.getElementById("status");
+
+        //clear any existing grid
         const existingGrid = document.getElementById("grid");
         if (existingGrid) {
             container.removeChild(existingGrid);
@@ -187,40 +191,33 @@ const gameDisplay = (function() {
         const grid = document.createElement("div");
         grid.id = 'grid';
 
-        //set grid display elements to their corresponding board items
-        const grid00 = document.createElement("div")
-        grid00.innerHTML = gameBoard.currentState()[0][0];
-        const grid01 = document.createElement("div")
-        grid01.innerHTML = gameBoard.currentState()[0][1];
-        const grid02 = document.createElement("div")
-        grid02.innerHTML = gameBoard.currentState()[0][2];
-        const grid10 = document.createElement("div")
-        grid10.innerHTML = gameBoard.currentState()[1][0];
-        const grid11 = document.createElement("div")
-        grid11.innerHTML = gameBoard.currentState()[1][1];
-        const grid12 = document.createElement("div")
-        grid12.innerHTML = gameBoard.currentState()[1][2];
-        const grid20 = document.createElement("div")
-        grid20.innerHTML = gameBoard.currentState()[2][0];
-        const grid21 = document.createElement("div")
-        grid21.innerHTML = gameBoard.currentState()[2][1];
-        const grid22 = document.createElement("div")
-        grid22.innerHTML = gameBoard.currentState()[2][2];
-        
-        grid.appendChild(grid00);
-        grid.appendChild(grid01);
-        grid.appendChild(grid02);
-        grid.appendChild(grid10);
-        grid.appendChild(grid11);
-        grid.appendChild(grid12);
-        grid.appendChild(grid20);
-        grid.appendChild(grid21);
-        grid.appendChild(grid22);
-        
+        //create cells and add click handlers in grid
+        for(let row = 0; row < 3; row++) {
+            for(let col = 0; col < 3; col++) {
+                const cell = document.createElement("div");
+                cell.innerHTML = gameBoard.currentState()[row][col];
+                cell.dataset.row = row;
+                cell.dataset.col = col;
+                cell.addEventListener('click', handleClick);
+                grid.appendChild(cell);
+            }
+        }
+
         container.appendChild(grid);
     }
 
-    return {displayBoard};
+    function handleClick(e) {
+        const row = e.target.dataset.row;
+        const col = e.target.dataset.col;
+        gameFlow.handlePlayerMove(row, col);
+    }
+
+    function updateStatus(message) {
+        const status = document.getElementById("status");
+        status.textContent = message;
+    }
+
+    return {displayBoard, updateStatus};
 
 })();
 
