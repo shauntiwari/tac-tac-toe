@@ -122,6 +122,14 @@ const gameFlow = (function() {
         activePlayer = (activePlayer === playerOne) ? playerTwo : playerOne;
     }
 
+    function resetGame() {
+        gameBoard.resetBoard();
+        gameOver = false;
+        activePlayer = playerOne;
+        gameDisplay.displayBoard();
+        gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);
+    }
+
     function playGame() {
         gameOver = false;
         gameDisplay.displayBoard();
@@ -144,7 +152,7 @@ const gameFlow = (function() {
         [[0,2], [1,1], [2,0]]  // Top-right to bottom-left
     ];
 
-    return {playGame, handlePlayerMove}; // Return an object containing publicly available function
+    return {playGame, handlePlayerMove, resetGame}; // Return an object containing publicly available function
 })();
 
 
@@ -189,6 +197,9 @@ const gameDisplay = (function() {
         const status = document.getElementById("status");
         status.textContent = message;
     }
+
+    // Event listener for reset button
+    document.getElementById('reset-button').addEventListener('click', gameFlow.resetGame);
 
     return {displayBoard, updateStatus};
 
