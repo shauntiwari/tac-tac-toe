@@ -63,10 +63,31 @@ const player = function(name, marker) {
 
 // Setup Game Flow object as IIFE since there's only one, manages game state & logic
 const gameFlow = (function() {
-    const playerOne = player("Player One", "X");
-    const playerTwo = player("Player Two", "O");
+    let playerOne;
+    let playerTwo;
     let activePlayer = playerOne;
     let gameOver = false;
+
+    function initializePlayers(player1Name, player2Name) {
+        playerOne = player(player1Name || "Player One", "X");
+        playerTwo = player(player2Name || "Player Two", "O");
+        activePlayer = playerOne;
+    }
+
+    function startGame(event) {
+        if (event) event.preventDefault();
+        
+        const player1Name = document.getElementById('player1').value.trim() || "Player One";
+        const player2Name = document.getElementById('player2').value.trim() || "Player Two";
+        
+        initializePlayers(player1Name, player2Name);
+        
+        // Hide the form
+        document.getElementById('player-form').classList.add('hidden');
+        
+        // Start the game
+        playGame();
+    }
 
     function handlePlayerMove(row, col) {
         if (gameOver) return;
@@ -125,9 +146,7 @@ const gameFlow = (function() {
     function resetGame() {
         gameBoard.resetBoard();
         gameOver = false;
-        activePlayer = playerOne;
-        gameDisplay.displayBoard();
-        gameDisplay.updateStatus(`${activePlayer.getName()}'s turn`);
+        document.getElementById('player-form').classList.remove('hidden');
     }
 
     function playGame() {
@@ -152,7 +171,7 @@ const gameFlow = (function() {
         [[0,2], [1,1], [2,0]]  // Top-right to bottom-left
     ];
 
-    return {playGame, handlePlayerMove, resetGame}; // Return an object containing publicly available function
+    return {playGame, handlePlayerMove, resetGame, startGame}; // Return object containing publicly available functions
 })();
 
 
@@ -205,4 +224,5 @@ const gameDisplay = (function() {
 
 })();
 
-gameFlow.playGame();
+// form submission required to start game
+document.getElementById('name-form').addEventListener('submit', gameFlow.startGame);
